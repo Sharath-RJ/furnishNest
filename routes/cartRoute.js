@@ -1,0 +1,13 @@
+const cartControler=require('../controller/cartController')
+var express = require("express")
+var router = express.Router()
+router.get("/addToCart", cartControler.addToCart)
+router.get("/viewCart", cartControler.viewCart)
+router.get("/updateQuantity", cartControler.updateQuantity)
+router.get("/getProductDetails", cartControler.getProductDetails)
+router.get("/getProductInfo", cartControler.getProductInfo)
+router.get("/removeCart", cartControler.removeCart)
+router.get("/checkOut", cartControler.checkOut)
+router.get("/getQuantity", cartControler.getQuantity)
+router.get("/cartNumberCount", cartControler.countCartNumber)
+module.exports=router

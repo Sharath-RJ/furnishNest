@@ -1,0 +1,80 @@
+<div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="returnReasonModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="returnModalLabel">Available coupons!!!</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <!-- Create a form to select a reason for return -->
+                <div class="form-group">
+                    <div class="coupon-container">
+                        <p id="couponCode" name="couponCode"></p>
+                        <p id="couponDiscount" name="couponDiscount"> </p>
+                        <p id="minimumAmount" name="minimumAmount"> </p>
+                        <p id="couponExpiry" name="couponExpiry"> </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary" id="confirmReturn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+        $('#couponButton').on('click', function () {
+            $('#couponModal').modal('show');
+            console.log("Coupon button clicked ");
+    
+            // Make an AJAX request to get available coupons
+            $.ajax({
+                type: "GET",
+                url: "/getAvailableCoupons",
+                success: function (response) {
+                    console.log(response, "Available Coupons");
+                    // Process the response and update the modal content
+                    updateCouponModal(response.availableCoupons);
+                }
+            });
+        });
+    
+        $('#confirmReturn').on('click', function () {
+            $('#couponModal').modal('hide');
+            // Additional logic if needed
+        });
+
+        function updateCouponModal(coupons) {
+    var couponContainer = $('.coupon-container');
+    couponContainer.empty(); // Clear previous content
+
+    if (coupons.length > 0) {
+        coupons.forEach(function (coupon) {
+            console.log(coupon)
+            // Append coupon details with some styling
+            var couponHtml = '<div class="coupon-details">' +
+                '<p>Coupon Code: ' + coupon.code + '</p>' +
+                '<p>Discount: ' + coupon.discount + '%</p>' +
+                '<p>Discount Upto: ' + coupon.maxAmount + '</p>' +
+                '<p>Expiry Date: ' + coupon.expiry + '</p>' +
+                '</div>';
+
+            couponContainer.append(couponHtml);
+        });
+    } else {
+        // Handle the case when no coupons are available
+        couponContainer.append('<p>No coupons available</p>');
+    }
+
+    // Show the modal after updating the content
+    $('#couponModal').modal('show');
+}
+
+</script>
